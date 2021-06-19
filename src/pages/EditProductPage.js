@@ -1,5 +1,6 @@
 import React from 'react'
-import EditProductForm from '../components/EditProductForm'
+import EditProductForm from '../components/EditProductForm';
+import Header from "../components/Header";
 
 const EditProductPage = () => {
     return (

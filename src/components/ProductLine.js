@@ -57,7 +57,9 @@ const ProductLine = ({id,title,unitPrice,qty}) =>
 
     const editHandler = ()=>{
 
-      //  alert(`Product with ID ${id} was edited`);
+      
+
+        history.push(`/products/edit/${id}`);
     }
 
 

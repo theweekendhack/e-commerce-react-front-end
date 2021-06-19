@@ -1,6 +1,6 @@
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import EcommerceContext from '../context/EcommerceContext';
-import {useHistory} from "react-router-dom"
+import {useHistory,useParams} from "react-router-dom"
 
 const EditProductForm = () => 
 {
@@ -9,16 +9,76 @@ const EditProductForm = () =>
         title:"",
         unitPrice:"",
         description :"",
-        qty : 0,
+        qty : "",
         category : "",
         isBestseller:false,
-        costPrice :0
+        costPrice :""
     })
+
+
+    const {products,setProducts} = useContext(EcommerceContext);
+
+    const {id} = useParams();
+
+    const history = useHistory();
+
+    useEffect(()=>{
+
+        fetch("http://localhost:5000/products/"+id)
+        .then(res=>res.json())
+        .then(json=>{
+
+            console.log("Edit From");
+            console.log(json);
+
+            setProductFormData(json.data);           
+        })
+        .catch(err=>console.log(`Error ${err}`));
+
+
+
+    },[])
 
     const formSubmitHandler = (evt)=>
     {
 
         evt.preventDefault(); 
+
+        fetch(`http://localhost:5000/products/${id}`,{
+            method:"PUT",
+            headers : {
+                "Content-Type" : "application/json"
+            },
+
+            body: JSON.stringify(productFormData)
+        })
+        .then(res=>res.json())
+        .then((json)=>{
+
+
+            alert(json.message);
+
+            //Create new array but copy the values from the current state to it
+            const newProducts = [...products];
+
+            const index = newProducts.findIndex(product=>product._id === id);
+
+            const newProduct = json.data;
+
+
+            //This replaces the old product with the updated product 
+            newProducts.splice(index,1,newProduct);
+
+            setProducts(newProducts);
+
+            history.push("/")
+            
+        })
+        .catch(err=>console.log(`Error :${err}`));
+
+
+
+
 
     }
 
@@ -47,7 +107,7 @@ const EditProductForm = () =>
 
                     setProductFormData({
                         ...productFormData,
-                        unitPrice : parseFloat(evt.target.value)
+                        unitPrice : evt.target.value
                     })
                     }}  />
             </div>
@@ -58,7 +118,7 @@ const EditProductForm = () =>
 
                     setProductFormData({
                         ...productFormData,
-                        costPrice : parseFloat(evt.target.value)
+                        costPrice : evt.target.value
                     })
                     }}  />
             </div>
@@ -69,7 +129,7 @@ const EditProductForm = () =>
 
                     setProductFormData({
                         ...productFormData,
-                        qty : parseFloat(evt.target.value)
+                        qty : evt.target.value
                     })
                     }}  />
             </div>
@@ -95,6 +155,7 @@ const EditProductForm = () =>
                         })
 
                 }}>
+                    <option value="">Please Select a Category</option>
                     <option value="Chair">Chair</option>
                     <option value="Electronics">Electronics</option>
                     <option value="Smart Phones">Smart Phones</option>

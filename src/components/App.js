@@ -9,6 +9,7 @@ import AddProductPage from "../pages/AddProductPage";
 import {useState, useEffect} from "react";
 import EcommerceContext from "../context/EcommerceContext";
 import ProductDescriptionPage from "../pages/ProductDescriptionPage";
+import EditProductPage from "../pages/EditProductPage";
 
 import "../assets/css/App.css"
 
@@ -57,11 +58,18 @@ const App = () => {
 
               </Route>
 
-              <Route path = "/products/:id">
+              
+              <Route exact path = "/products/:id">
 
                 <ProductDescriptionPage/>
 
               </Route>
+
+              <Route path = "/products/edit/:id">
+
+                <EditProductPage/>
+
+            </Route>
               
           </Switch>
 

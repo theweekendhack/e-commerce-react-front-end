@@ -12,10 +12,10 @@ const AddProductForm = () =>
         title:"",
         unitPrice:"",
         description :"",
-        qty : 0,
+        qty : "",
         category : "",
         isBestseller:false,
-        costPrice :0
+        costPrice :""
     })
 
     const formSubmitHandler = (evt)=>
@@ -86,7 +86,7 @@ const AddProductForm = () =>
 
                     setProductFormData({
                         ...productFormData,
-                        unitPrice : parseFloat(evt.target.value)
+                        unitPrice : evt.target.value
                     })
                     }}  />
             </div>
@@ -97,7 +97,7 @@ const AddProductForm = () =>
 
                     setProductFormData({
                         ...productFormData,
-                        costPrice : parseFloat(evt.target.value)
+                        costPrice : evt.target.value
                     })
                     }}  />
             </div>
